@@ -1,0 +1,28 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+.crystal-tools {
+  padding: 0px 4px;
+}
+
+.crystal-tools-context-table {
+  background: @input-background-color;
+  color: @text-color;
+  font-family: @font-family;
+  font-size: @input-font-size;
+  border-spacing: 4px;
+  border-collapse: separate;
+  text-align: center;
+
+  code {
+    width: 100%;
+    display: inline-block;
+  }
+}
+
+.crystal-tools-context-table-header th {
+  border-bottom: 1px solid @pane-item-background-color
+}
