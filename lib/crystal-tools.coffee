@@ -3,6 +3,11 @@ CrystalToolsView = require './crystal-tools-view'
 ChildProcess = require 'child_process'
 
 module.exports = CrystalTools =
+  config:
+    crystalCompiler:
+      type: 'string'
+      default: 'crystal'
+
   crystalToolsView: null
   modalPanel: null
   subscriptions: null
@@ -43,7 +48,7 @@ module.exports = CrystalTools =
       point = editor.getCursorBufferPosition()
       line = point.row + 1
       column = point.column + 1
-      crystal = '~/Work/Manas/crystal/src/.build/crystal'
+      crystal = atom.config.get('crystal-tools.crystalCompiler')
 
       ChildProcess.exec "#{crystal} context --cursor #{path}:#{line}:#{column} --format json #{path}", (error, stdout, stderr) =>
         @crystalToolsView.showContext(JSON.parse(stdout))
