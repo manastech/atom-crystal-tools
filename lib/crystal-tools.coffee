@@ -1,6 +1,9 @@
 CrystalToolsView = require './crystal-tools-view'
 {CompositeDisposable} = require 'atom'
 ChildProcess = require 'child_process'
+ProcessView = require './process-view'
+Location = require './location'
+ContextResultView = require './context-result-view.coffee'
 
 module.exports = CrystalTools =
   config:
@@ -14,7 +17,7 @@ module.exports = CrystalTools =
 
   activate: (state) ->
     @crystalToolsView = new CrystalToolsView(state.crystalToolsViewState)
-    @modalPanel = atom.workspace.addRightPanel(item: @crystalToolsView.getElement(), visible: false)
+    @modalPanel = atom.workspace.addRightPanel(item: @crystalToolsView.element, visible: false)
 
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
@@ -44,14 +47,10 @@ module.exports = CrystalTools =
     @ensureVisible()
     editor = atom.workspace.getActiveTextEditor()
     if editor != ''
-      path = editor.getPath()
-      point = editor.getCursorBufferPosition()
-      line = point.row + 1
-      column = point.column + 1
+      location = Location.fromEditorCursor(editor)
       crystal = atom.config.get('crystal-tools.crystalCompiler')
+      view = new ProcessView("Context", location)
+      main = location.filename
+      @crystalToolsView.addView(view)
 
-      ChildProcess.exec "#{crystal} context --cursor #{path}:#{line}:#{column} --format json #{path}", (error, stdout, stderr) =>
-        @crystalToolsView.showContext(JSON.parse(stdout))
-        @crystalToolsView.showError(stderr)
-        if error != null
-          @crystalToolsView.showError('exec error: ' + error)
+      ChildProcess.exec "#{crystal} context --cursor #{location.cursor()} --format json #{main}", view.renderCallback(new ContextResultView())

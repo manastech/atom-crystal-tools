@@ -3,8 +3,7 @@
   "main": "./lib/crystal-tools",
   "version": "0.0.0",
   "description": "Integrate crystal tools in atom",
-  "keywords": [
-  ],
+  "keywords": [],
   "activationCommands": {
     "atom-workspace": "crystal-tools:toggle",
     "atom-text-editor": "crystal-tools:context"
@@ -15,5 +14,6 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
+    "space-pen": "^5.1.1"
   }
 }
