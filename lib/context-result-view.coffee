@@ -33,7 +33,7 @@ module.exports =
 
     @content: ->
       @div =>
-        @p outlet: "message"
+        @span outlet: "message"
         @table outlet: "table", class: "crystal-tools-context-table", =>
           @tr class: "crystal-tools-context-table-header", =>
             @th "Expr"
