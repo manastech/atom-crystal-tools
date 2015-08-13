@@ -8,7 +8,7 @@
     "atom-workspace": "crystal-tools:toggle",
     "atom-text-editor": ["crystal-tools:context", "crystal-tools:implementations"]
   },
-  "repository": "https://github.com/atom/crystal-tools",
+  "repository": "https://github.com/manastech/atom-crystal-tools",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
