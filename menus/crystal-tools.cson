@@ -4,6 +4,9 @@
     {
       'label': 'Crystal Context Tool'
       'command': 'crystal-tools:context'
+    },{
+      'label': 'Crystal Implementations Tool'
+      'command': 'crystal-tools:implementations'
     }
   ]
 'menu': [

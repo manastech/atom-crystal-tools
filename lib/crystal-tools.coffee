@@ -4,6 +4,7 @@ ChildProcess = require 'child_process'
 ProcessView = require './process-view'
 Location = require './location'
 ContextResultView = require './context-result-view.coffee'
+ImplementationsResultView = require './implementations-result-view.coffee'
 
 module.exports = CrystalTools =
   config:
@@ -25,6 +26,7 @@ module.exports = CrystalTools =
     # Register command that toggles this view
     @subscriptions.add atom.commands.add 'atom-workspace', 'crystal-tools:toggle': => @toggle()
     @subscriptions.add atom.commands.add 'atom-workspace', 'crystal-tools:context': => @context()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'crystal-tools:implementations': => @implementations()
 
   deactivate: ->
     @modalPanel.destroy()
@@ -43,14 +45,20 @@ module.exports = CrystalTools =
   ensureVisible: ->
     @toggle() unless @modalPanel.isVisible()
 
-  context: ->
+  _cursorCommand: (command, result_view) ->
     @ensureVisible()
     editor = atom.workspace.getActiveTextEditor()
     if editor != ''
       location = Location.fromEditorCursor(editor)
       crystal = atom.config.get('crystal-tools.crystalCompiler')
-      view = new ProcessView("Context", location)
+      view = new ProcessView(command, location)
       main = location.filename
       @crystalToolsView.addView(view)
 
-      ChildProcess.exec "#{crystal} context --cursor #{location.cursor()} --format json #{main}", view.renderCallback(new ContextResultView())
+      ChildProcess.exec "#{crystal} #{command} --cursor #{location.cursor()} --format json #{main}", view.renderCallback(result_view)
+
+  context: ->
+    @_cursorCommand("context", new ContextResultView())
+
+  implementations: ->
+    @_cursorCommand("implementations", new ImplementationsResultView())
