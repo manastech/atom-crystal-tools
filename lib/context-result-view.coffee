@@ -5,6 +5,10 @@ module.exports =
 
     load: (response) ->
       @message.text(response.message)
+      if response.status != "ok"
+        @table.remove()
+        return
+
       @typeHeader.attr("colspan", response.contexts.length)
 
       for key of response.contexts[0]

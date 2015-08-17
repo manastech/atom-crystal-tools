@@ -6,8 +6,9 @@ module.exports =
   class ImplementationsResultView extends View
 
     load: (response) ->
-      console.log(response)
       @message.text(response.message)
+      if response.status != "ok"
+        return
       for impl in response.implementations
         @implementations.append(new ImplementationItemView(impl))
 
