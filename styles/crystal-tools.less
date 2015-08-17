@@ -7,6 +7,11 @@
 .crystal-tools {
   padding: 0px 4px;
 
+  h1 {
+    font-size: 1.2em;
+    margin: 4px 0px;
+  }
+
   .process-view-location {
     padding-right: 20px;
   }
@@ -14,6 +19,11 @@
   .close-icon {
     right: 0;
     position: absolute;
+    visibility: hidden;
+  }
+
+  li:hover .close-icon {
+    visibility: visible;
   }
 
   .implementations-result-view {
