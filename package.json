@@ -1,12 +1,15 @@
 {
   "name": "crystal-tools",
   "main": "./lib/crystal-tools",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Integrate crystal tools in atom",
   "keywords": [],
   "activationCommands": {
     "atom-workspace": "crystal-tools:toggle",
-    "atom-text-editor": ["crystal-tools:context", "crystal-tools:implementations"]
+    "atom-text-editor": [
+      "crystal-tools:context",
+      "crystal-tools:implementations"
+    ]
   },
   "repository": "https://github.com/manastech/atom-crystal-tools",
   "license": "MIT",
