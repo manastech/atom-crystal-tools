@@ -8,8 +8,24 @@ class CrystalToolsView extends View
   @content: ->
     @div class: "crystal-tools", =>
       @h1 "Crystal Tools"
-      @div outlet: "help", =>
-        @p "TBD: Intro to crystal tools"
+      @div class: "help", outlet: "help", =>
+        @p =>
+          @text "Enables built in tools in "
+          @a "crystal", href:"http://crystal-lang.org"
+          @text " compiler to be used from atom."
+
+        @p =>
+          @dl =>
+            @dt "Context"
+            @dd "Displays available context variables at a specific location"
+
+            @dt "Implementations"
+            @dd "Over a method call, search for all possible definition of the method. Even across macro expansions."
+
+        @p =>
+          @a href: 'https://github.com/manastech/atom-crystal-tools', =>
+            @span class: 'icon icon-mark-github'
+
       @ol class: "list-tree", outlet: "messages"
 
   addView: (view) ->

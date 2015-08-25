@@ -30,6 +30,13 @@
     ul { padding-left: 16px; }
   }
 
+  .help, .error_output {
+    overflow-x: scroll;
+    max-width: 350px;
+    max-height: 600px;
+    overflow-y: scroll;    
+  }
+
   li {
     .entries {
       display: block;
@@ -39,10 +46,6 @@
 
     .error_output {
       display: none;
-      overflow-x: scroll;
-      max-width: 350px;
-      max-height: 600px;
-      overflow-y: scroll;
     }
 
     &.failed {

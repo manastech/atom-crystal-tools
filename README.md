@@ -6,7 +6,7 @@ _Note: currently the tools are available in a [tool-impl](https://github.com/man
 
 Supported tools
 
-* **context**: display available context variables at a specific location
+* **context**: displays available context variables at a specific location
 * **implementations**: over a method call, search for all possible definition of the method. Even across macro expansions.
 
 Screenshot
