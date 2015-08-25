@@ -5,6 +5,8 @@ ProcessView = require './process-view'
 Location = require './location'
 ContextResultView = require './context-result-view.coffee'
 ImplementationsResultView = require './implementations-result-view.coffee'
+Tmp = require 'tmp'
+FS = require 'fs'
 
 module.exports = CrystalTools =
   config:
@@ -49,13 +51,37 @@ module.exports = CrystalTools =
     @ensureVisible()
     editor = atom.workspace.getActiveTextEditor()
     if editor != ''
+      editor.save()
       location = Location.fromEditorCursor(editor)
       crystal = atom.config.get('crystal-tools.crystalCompiler')
       view = new ProcessView(command, location)
-      main = location.filename
+      main = @getMainFor(location.filename)
       @crystalToolsView.addView(view)
 
-      ChildProcess.exec "#{crystal} #{command} --cursor #{location.cursor()} --format json --no-color #{main}", view.renderCallback(result_view)
+      usr_command = "#{crystal} #{command} --cursor #{location.cursor()} --format json --no-color #{main.name}"
+
+      ChildProcess.exec usr_command, (error, stdout, stderr) ->
+        view.renderCallback(usr_command, result_view)(error, stdout, stderr)
+        main.remove()
+
+  getMainFor: (filename) ->
+    components = atom.project.relativizePath(filename)
+    if components[1].startsWith("src/")
+      tmpobj = Tmp.fileSync dir: components[0], prefix: 'atom-crystal-tools-', postfix: '.cr'
+      FS.writeSync tmpobj.fd, """
+      require "spec"
+      require "./spec/**"
+      """
+      {
+        name: tmpobj.name,
+        remove: -> tmpobj.removeCallback()
+      }
+    else
+      {
+        name: filename,
+        remove: ->
+
+      }
 
   context: ->
     @_cursorCommand("context", new ContextResultView())

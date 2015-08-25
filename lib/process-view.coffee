@@ -11,7 +11,7 @@ module.exports =
     @content: ->
       @li class: "list-nested-item", =>
         @div class: "header list-item", =>
-          @span class: "icon icon-circuit-board", outlet: "command", "<command>"
+          @span class: "icon icon-circuit-board", outlet: "command", click: 'showCommand', "<command>"
           @text " "
           @span class: "process-view-location", outlet: "location"
           @a class:'close-icon icon icon-x', click: 'removeFromParent'
@@ -23,16 +23,22 @@ module.exports =
 
     setContainerView: (@container) ->
 
-    renderCallback: (result_view) ->
+    showCommand: ->
+      alert(@command)
+
+    renderCallback: (command, result_view) ->
       (error, stdout, stderr) =>
+        @command = command
+
+        if stdout.match(/([^\n]*)Using compiled compiler at/)
+          stdout = stdout.substr(stdout.indexOf('\n')+1)
+
         if stderr != "" || error != null
           @addClass("failed")
           @error_output.text("#{stdout}\n#{stderr}")
           return
 
         try
-          if stdout.match(/([^\n]*)Using compiled compiler at/)
-            stdout = stdout.substr(stdout.indexOf('\n')+1)
           json_result = JSON.parse(stdout)
         catch
           @output.text("ERROR #{stdout}")
