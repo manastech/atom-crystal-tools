@@ -63,8 +63,8 @@ module.exports = CrystalTools =
       @crystalToolsView.addView(view)
 
       usr_command = "#{crystal} #{command} --cursor #{location.cursor()} --format json --no-color #{main.name}"
-
-      ChildProcess.exec usr_command, (error, stdout, stderr) ->
+      usr_command_options = {cwd: main.cwd}
+      ChildProcess.exec usr_command, usr_command_options, (error, stdout, stderr) ->
         view.renderCallback(usr_command, result_view)(error, stdout, stderr)
         main.remove()
 
@@ -77,14 +77,15 @@ module.exports = CrystalTools =
       require "./spec/**"
       """
       {
+        cwd: components[0],
         name: tmpobj.name,
         remove: -> tmpobj.removeCallback()
       }
     else
       {
-        name: filename,
+        cwd: components[0],
+        name: components[1],
         remove: ->
-
       }
 
   context: ->
