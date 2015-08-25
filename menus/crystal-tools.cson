@@ -2,11 +2,17 @@
 'context-menu':
   'atom-text-editor': [
     {
-      'label': 'Crystal Context Tool'
-      'command': 'crystal-tools:context'
-    },{
-      'label': 'Crystal Implementations Tool'
-      'command': 'crystal-tools:implementations'
+      'label': 'Crystal Tools'
+      'submenu': [
+        {
+          'label': 'Context'
+          'command': 'crystal-tools:context'
+        },
+        {
+          'label': 'Implementations'
+          'command': 'crystal-tools:implementations'
+        }
+      ]
     }
   ]
 'menu': [
@@ -18,10 +24,14 @@
         {
           'label': 'Toggle'
           'command': 'crystal-tools:toggle'
-        }
+        },
         {
-          'label': 'Crystal Context Tool'
+          'label': 'Context'
           'command': 'crystal-tools:context'
+        },
+        {
+          'label': 'Implementations'
+          'command': 'crystal-tools:implementations'
         }
       ]
     ]
