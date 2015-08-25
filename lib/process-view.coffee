@@ -16,6 +16,7 @@ module.exports =
           @span class: "process-view-location", outlet: "location"
           @a class:'close-icon icon icon-x', click: 'removeFromParent'
         @p class: "entries", outlet: "output", "loading..."
+        @pre class: "error_output", outlet: "error_output"
 
     removeFromParent: (event, element) ->
       @container.removeView(@element)
@@ -24,11 +25,9 @@ module.exports =
 
     renderCallback: (result_view) ->
       (error, stdout, stderr) =>
-        if stderr != ""
-          @output.text(stderr)
-          return
-        if error != null
-          @output.text('exec error: ' + error)
+        if stderr != "" || error != null
+          @addClass("failed")
+          @error_output.text("#{stdout}\n#{stderr}")
           return
 
         try

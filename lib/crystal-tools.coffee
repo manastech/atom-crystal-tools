@@ -55,7 +55,7 @@ module.exports = CrystalTools =
       main = location.filename
       @crystalToolsView.addView(view)
 
-      ChildProcess.exec "#{crystal} #{command} --cursor #{location.cursor()} --format json #{main}", view.renderCallback(result_view)
+      ChildProcess.exec "#{crystal} #{command} --cursor #{location.cursor()} --format json --no-color #{main}", view.renderCallback(result_view)
 
   context: ->
     @_cursorCommand("context", new ContextResultView())

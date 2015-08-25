@@ -29,6 +29,33 @@
   .implementations-result-view {
     ul { padding-left: 16px; }
   }
+
+  li {
+    .entries {
+      display: block;
+      overflow-x: scroll;
+      max-width: 350px;
+    }
+
+    .error_output {
+      display: none;
+      overflow-x: scroll;
+      max-width: 350px;
+      max-height: 600px;
+      overflow-y: scroll;
+    }
+
+    &.failed {
+      .entries {
+        display: none;
+        // font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+      }
+      .error_output {
+        display: block;
+        overflow-x: scroll;
+      }
+    }
+  }
 }
 
 .crystal-tools-context-table {
