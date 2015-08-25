@@ -31,6 +31,8 @@ module.exports =
           return
 
         try
+          if stdout.match(/([^\n]*)Using compiled compiler at/)
+            stdout = stdout.substr(stdout.indexOf('\n')+1)
           json_result = JSON.parse(stdout)
         catch
           @output.text("ERROR #{stdout}")
