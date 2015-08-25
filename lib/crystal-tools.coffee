@@ -13,6 +13,10 @@ module.exports = CrystalTools =
     crystalCompiler:
       type: 'string'
       default: 'crystal'
+    useSpecOnSrc:
+      title: 'Compile ./spec/** when running tools in ./src/**'
+      type: 'boolean'
+      default: true
 
   crystalToolsView: null
   modalPanel: null
@@ -66,7 +70,7 @@ module.exports = CrystalTools =
 
   getMainFor: (filename) ->
     components = atom.project.relativizePath(filename)
-    if components[1].startsWith("src/")
+    if atom.config.get('crystal-tools.useSpecOnSrc') && components[1].startsWith("src/")
       tmpobj = Tmp.fileSync dir: components[0], prefix: 'atom-crystal-tools-', postfix: '.cr'
       FS.writeSync tmpobj.fd, """
       require "spec"
