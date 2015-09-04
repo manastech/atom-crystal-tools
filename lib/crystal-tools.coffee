@@ -13,10 +13,17 @@ module.exports = CrystalTools =
     crystalCompiler:
       type: 'string'
       default: 'crystal'
+      order: 1
     useSpecOnSrc:
       title: 'Compile ./spec/** when running tools in ./src/**'
       type: 'boolean'
       default: true
+      order: 2
+    mainSrc:
+      title: 'Compile specified file when running tools. (blank for current file)'
+      type: 'string'
+      default: ''
+      order: 3
 
   crystalToolsView: null
   modalPanel: null
@@ -80,6 +87,12 @@ module.exports = CrystalTools =
         cwd: components[0],
         name: tmpobj.name,
         remove: -> tmpobj.removeCallback()
+      }
+    else if atom.config.get('crystal-tools.mainSrc') != ''
+      {
+        cwd: components[0],
+        name: atom.config.get('crystal-tools.mainSrc'),
+        remove: ->
       }
     else
       {
