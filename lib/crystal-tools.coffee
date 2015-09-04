@@ -69,7 +69,7 @@ module.exports = CrystalTools =
       main = @getMainFor(location.filename)
       @crystalToolsView.addView(view)
 
-      usr_command = "#{crystal} #{command} --cursor #{location.cursor()} --format json --no-color #{main.name}"
+      usr_command = "#{crystal} tool #{command} --cursor #{location.cursor()} --format json --no-color #{main.name}"
       usr_command_options = {cwd: main.cwd}
       ChildProcess.exec usr_command, usr_command_options, (error, stdout, stderr) ->
         view.renderCallback(usr_command, result_view)(error, stdout, stderr)
