@@ -24,6 +24,11 @@ module.exports = CrystalTools =
       type: 'string'
       default: ''
       order: 3
+    stripPath:
+      title: "Paths to strip from shown filenames. (blank to autogenerate)"
+      type: 'string'
+      default: ''
+      order: 4
 
   crystalToolsView: null
   modalPanel: null
@@ -40,6 +45,9 @@ module.exports = CrystalTools =
     @subscriptions.add atom.commands.add 'atom-workspace', 'crystal-tools:toggle': => @toggle()
     @subscriptions.add atom.commands.add 'atom-workspace', 'crystal-tools:context': => @context()
     @subscriptions.add atom.commands.add 'atom-workspace', 'crystal-tools:implementations': => @implementations()
+    @subscriptions.add atom.config.onDidChange 'crystal-tools.crystalCompiler', =>
+      atom.config.set('crystal-tools.stripPath', '')
+      @_updateStripPath()
 
   deactivate: ->
     @modalPanel.destroy()
@@ -58,7 +66,22 @@ module.exports = CrystalTools =
   ensureVisible: ->
     @toggle() unless @modalPanel.isVisible()
 
+  _updateStripPathIfBlank: ->
+    if atom.config.get('crystal-tools.stripPath') == ''
+      @_updateStripPath()
+
+  _updateStripPath: ->
+    return if atom.project.getPaths().length == 0
+    crystal = atom.config.get('crystal-tools.crystalCompiler')
+    usr_command = "#{crystal} eval 'puts ENV[\"CRYSTAL_PATH\"]'"
+    cwd = atom.project.getPaths()[0]
+    ChildProcess.exec usr_command, {cwd: cwd}, (error, stdout, stderr) ->
+      if stdout.match(/([^\n]*)Using compiled compiler at/)
+        stdout = stdout.substr(stdout.indexOf('\n')+1)
+      atom.config.set('crystal-tools.stripPath', stdout.trim())
+
   _cursorCommand: (command, result_view) ->
+    @_updateStripPathIfBlank()
     @ensureVisible()
     editor = atom.workspace.getActiveTextEditor()
     if editor != ''
